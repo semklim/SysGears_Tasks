@@ -1,7 +1,7 @@
 const { allSystems, allAvailableMeasure } = require('./allSystems');
 const ratioBetweenSystems = require('./ratioBetweenSystems');
 
-const input = '{"distance": {"unit": "m", "value": 0.5}, "convertTo": "km"}';
+const input = '{"distance": {"unit": "m", "value": 0}, "convertTo": "kmq"}';
 
 function getSystem(units) {
   const length = allSystems.length;
@@ -27,6 +27,10 @@ function convertor(json) {
   if (!from || !to) {
     throw new Error(`One of unit is not valid. \n
     All available measure units: ${allAvailableMeasure.join(' | ')}`)
+  }
+
+  if (typeof value !== 'number') {
+    throw new Error('Value is not a number');
   }
 
   if (unit === convertTo) {
