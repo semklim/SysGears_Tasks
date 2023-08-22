@@ -1,4 +1,4 @@
-module.export = ratioBetweenSystems = {
+module.exports = {
   metric: {
     imperial: {
       ratio: 3.28084,

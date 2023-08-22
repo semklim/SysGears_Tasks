@@ -1,4 +1,5 @@
 module.exports = imperial = {
+  system: 'imperial',
   mil: {
     name: {
       singular: 'Mil',
