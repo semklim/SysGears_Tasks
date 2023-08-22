@@ -1,0 +1,12 @@
+{
+	"name": "sysgears-tasks",
+	"version": "1.0.0",
+	"description": "",
+	"main": "index.js",
+	"scripts": {
+		"task1": "node ./convertorOfUnits/index.js"
+	},
+	"keywords": [],
+	"author": "Roman Klymashenko <romanklimashenko@gmail.com> (https://github.com/semklim)",
+	"license": "MIT"
+}
