@@ -1,55 +1,75 @@
-const { allSystems, allAvailableMeasure } = require('./allSystems');
+const { allSystems, extendSystem } = require('./allSystems');
 const ratioBetweenSystems = require('./ratioBetweenSystems');
+const validationHandler = require('./validation/validationHandler');
 
-const input = '{"distance": {"unit": "m", "value": 0}, "convertTo": "kmq"}';
+const input = `{
+  "distance": {"unit": "ftm", "value": 1}, 
+  "convertTo": "m", 
+  "option": {
+    "system": {
+      "name": "metric",
+      "dm":{
+        "name": {
+          "singular": "Decimeter",
+          "plural": "Decimeters"
+        },
+        "to_default": 1e-1
+      }
+    }
+  }
+}`;
 
 function getSystem(units) {
-  const length = allSystems.length;
+  const systems = Object.values(allSystems);
+  const length = systems.length;
 
   for (let i = 0; i < length; i += 1) {
-    const system = allSystems[i];
+    const system = systems[i];
 
     if (system[units]) {
       return {
         ...system[units],
-        system: system.system,
+        system: system.name,
       }
     }
   }
   return null;
 }
 
+function formatResult(unit, unitName, convertResult) {
+  return JSON.stringify({
+    unit,
+    name: unitName,
+    value: convertResult,
+  });
+}
+
 function convertor(json) {
-  const { distance: { unit, value }, convertTo } = JSON.parse(json);
+  const { distance: { unit, value }, convertTo, option } = JSON.parse(json);
+  let result;
+
+  if (option) {
+    extendSystem(option);
+  }
+
   const from = getSystem(unit);
   const to = getSystem(convertTo);
 
-  if (!from || !to) {
-    throw new Error(`One of unit is not valid. \n
-    All available measure units: ${allAvailableMeasure.join(' | ')}`)
-  }
-
-  if (typeof value !== 'number') {
-    throw new Error('Value is not a number');
-  }
+  validationHandler(from, to, value);
 
   if (unit === convertTo) {
-    return value;
+    return formatResult(convertTo, to.name.singular, value);
   }
 
   if (from.system === to.system) {
-    return from.to_default * value / to.to_default;
+    result = from.to_default * value / to.to_default;
   } else {
-    let result = ratioBetweenSystems[from.system][to.system].ratio * (value * from.to_default);
+    result = ratioBetweenSystems[from.system][to.system].ratio * (value * from.to_default);
 
     result = result / to.to_default;
 
-    return JSON.stringify({
-      name: to.name.singular,
-      unit: convertTo,
-      value: result
-    });
   }
+  return formatResult(convertTo, to.name.singular, result);
 }
 
 try {

@@ -1,5 +1,5 @@
 module.exports = metric = {
-  system: 'metric',
+  name: 'metric',
   nm: {
     name: {
       singular: 'Nanometer',

@@ -1,5 +1,5 @@
 module.exports = imperial = {
-  system: 'imperial',
+  name: 'imperial',
   mil: {
     name: {
       singular: 'Mil',
@@ -35,12 +35,12 @@ module.exports = imperial = {
     },
     to_default: 1,
   },
-  fathom: {
+  ftm: {
     name: {
       singular: 'Fathom',
       plural: 'Fathoms',
     },
-    to_default: 6,
+    to_default: 6.0761,
   },
   mi: {
     name: {
