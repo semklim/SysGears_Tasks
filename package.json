@@ -4,7 +4,8 @@
 	"description": "",
 	"main": "index.js",
 	"scripts": {
-		"task1": "node ./convertorOfUnits/index.js"
+		"task1": "node ./convertorOfUnits/index.js",
+		"task2": "node ./sortingDataApp/index.js"
 	},
 	"keywords": [],
 	"author": "Roman Klymashenko <romanklimashenko@gmail.com> (https://github.com/semklim)",
