@@ -1,5 +1,6 @@
-const { allSystems, extendSystem } = require('./allSystems');
-const ratioBetweenSystems = require('./ratioBetweenSystems');
+const { allSystems } = require('./allSystems');
+const { extendSystem } = require('./extendSystem/extendSystem');
+const ratioBetweenSystems = require('./systems/ratioBetweenSystems');
 const validationHandler = require('./validation/validationHandler');
 
 const input = `{
