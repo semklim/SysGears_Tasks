@@ -1,6 +1,7 @@
 const { checkDirection } = require("./altPathCheck");
 const createAsteroid = require("./asteroidPos");
 const drone = require("./drone/drone");
+const { generateError, generateResult } = require("./generateResponse/generateResponse");
 
 const size = 100;
 const pentagon = { X: 1, Y: 1, Z: 1 };
@@ -24,15 +25,12 @@ const checkNeighbors = (X, Y, Z) => {
 };
 
 function findAsteroid(start) {
-  let cur = start;
-
   while (true) {
-
     if (checkDirection({ minDist, path, points, prevDist, drone, asteroidPos })) {
       continue;
     }
 
-    const neighbors = checkNeighbors(cur.X, cur.Y, cur.Z);
+    const neighbors = checkNeighbors(start.X, start.Y, start.Z);
 
     for (let index = 0; index < 7; index += 1) {
       const el = neighbors[index];
@@ -48,28 +46,13 @@ function findAsteroid(start) {
       };
 
       if (minDist[1] <= 0) {
-        return JSON.stringify({
-          result: {
-            location: asteroidPos,
-            last: minDist[0],
-            probes: {
-              count: points.length,
-              coordinates: points
-            },
-          }
-        });
+        return generateResult(path, points);
       }
     }
-    cur = minDist[0];
+    start = minDist[0];
 
     if (points.length >= size ** 3) {
-      debugger;
-      return JSON.stringify({
-        error: 'You are reach the limit',
-        result: {
-          location: asteroidPos
-        }
-      });
+      return generateError(asteroidPos, points, 'You are reach the limit');
     }
   }
 

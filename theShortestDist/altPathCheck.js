@@ -1,3 +1,5 @@
+const { generateResult } = require("./generateResponse/generateResponse");
+
 const getDirection = (prevPos, curPos) => {
   return {
     X: curPos.X + (curPos.X - prevPos.X),
@@ -20,16 +22,7 @@ const checkDirection = ({ minDist, path, points, prevDist, drone, asteroidPos })
       path.push(el);
       minDist[1] = dist;
       if (minDist[1] <= 0) {
-        return JSON.stringify({
-          result: {
-            location: asteroidPos,
-            last: minDist[0],
-            probes: {
-              count: points.length,
-              coordinates: points
-            },
-          }
-        });
+        return generateResult(path, points);
       }
       return true;
     }
